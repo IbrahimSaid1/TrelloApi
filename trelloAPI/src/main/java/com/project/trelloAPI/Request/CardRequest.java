@@ -8,11 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class CardRequest {
-
-        Long cardId;
         String title;
         String description;
-        String section;
+        int section;
     }
 
 

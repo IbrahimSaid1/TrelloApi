@@ -12,8 +12,6 @@ import java.util.*;
 @Service
 public class CardService {
 
-    //private final AtomicLong cardIdCounter = new AtomicLong();
-   // private final Map<String, Map<Long, Card>> boardCards = new HashMap<>();
 
     @Autowired
     CardRepository cardRepository;
@@ -43,8 +41,8 @@ public class CardService {
     }
 
 
-    public void deleteCard(Card cardId) {
-        cardRepository.delete(cardId);
+    public void deleteCard(Long cardId) {
+        cardRepository.deleteById(cardId);
     }
 
 }

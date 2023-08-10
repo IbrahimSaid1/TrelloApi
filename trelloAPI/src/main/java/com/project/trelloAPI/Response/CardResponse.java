@@ -11,9 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CardResponse {
-    Long cardId;
     String title;
     String description;
-    String section;
+    int section;
 
 }

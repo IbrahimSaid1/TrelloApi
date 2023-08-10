@@ -26,15 +26,6 @@ public class BoardService {
     }
 
 
-//    public Board createBoard(BoardRequest boardRequest) {
-//        Board board = new Board();
-//        board.setName(boardRequest.getName());
-//        //board.setColumns(boardRequest.getColumns());
-//
-//        return boardRepository.save(board);
-//    }
-//
-
     public List<Board> getAllBoards() {
         return boardRepository.findAll();
     }
@@ -47,10 +38,12 @@ public class BoardService {
         Board board = boardRepository.findById(boardId).orElse(null);
         if (board != null) {
             board.setName(boardRequest.getName());
-           // board.setColumns(boardRequest.getColumns());
             return boardRepository.save(board);
         }
         return null;
+    }
+    public void updateBoardObject(Board board){
+        boardRepository.save(board);
     }
 
     public void deleteBoard(Long boardId) {

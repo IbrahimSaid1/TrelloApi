@@ -20,11 +20,11 @@ public class Card {
     @Column(nullable = false)
     public String title;
     public String description;
-    public String section;
+    public int section;
 
-    @ManyToOne
-    @JoinColumn(name = "board_id")
-    private Board board;
+/*    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "boardId")
+    private Board board;*/
 //    @ManyToOne
 //    @JoinColumn(name= "board_id", nullable = false)
 //    @JoinColumn

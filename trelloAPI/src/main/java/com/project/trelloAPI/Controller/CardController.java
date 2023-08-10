@@ -1,5 +1,6 @@
 package com.project.trelloAPI.Controller;
 
+import com.project.trelloAPI.Model.Board;
 import com.project.trelloAPI.Model.Card;
 import com.project.trelloAPI.Request.CardRequest;
 import com.project.trelloAPI.Services.BoardService;
@@ -12,9 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/boards/{boardId}/cards")
+@RequestMapping("/boards/{board_id}/cards")
 @CrossOrigin("*")
-
 public class CardController {
 
 
@@ -32,22 +32,31 @@ public class CardController {
         newCard.setTitle(cardRequest.getTitle());
         newCard.setDescription(cardRequest.getDescription());
         newCard.setSection(cardRequest.getSection());
-
         Card savedCard = cardService.saveCard(newCard);
+        Board board = boardService.getBoardById(boardId);
+        List<Card> cardsOfThisBoard = board.getCards();
+        cardsOfThisBoard.add(savedCard);
+        board.setCards(cardsOfThisBoard);
+        boardService.updateBoardObject(board);
+        if (board == null) {
+            // Log an error or throw an exception to indicate that the board is not found.
+        }
 
         return ResponseEntity.ok(savedCard);
     }
 
 
+
     @GetMapping
-    public ResponseEntity<Card> getAllCards(@PathVariable("board_id") Long boardId) {
+    public ResponseEntity<List<Card>> getAllCards(@PathVariable("board_id") Long boardId) {
         List<Card> cards = cardService.getAllCards(boardId);
-        return ResponseEntity.ok((Card) cards);
+        return ResponseEntity.ok(cards);
     }
 
-    @GetMapping("/{cardId}")
+
+    @GetMapping("/{card_Id}")
     public ResponseEntity<Card> getCardById(
-            @PathVariable("boardId") Long boardId,
+            @PathVariable("board_id") Long boardId,
             @PathVariable Long cardId) {
         Optional<Card> cardOptional = cardService.getCardById(cardId);
         if (cardOptional.isPresent()) {
@@ -57,31 +66,48 @@ public class CardController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PutMapping("/{cardId}")
+    @PutMapping("/{card_Id}")
     public ResponseEntity<Card> updateCard(
-            @PathVariable Long boardId,
-            @PathVariable Card cardId,
+            @PathVariable("board_id") Long boardId,
+            @PathVariable("card_Id") Long cardId,
             @RequestBody CardRequest cardRequest) {
 
-        Card updatedCard = cardService.updateCard(cardId);
-        if (updatedCard != null) {
+        Optional<Card> cardOptional = cardService.getCardById(cardId);
+        if (cardOptional.isPresent()) {
+            Card card = cardOptional.get();
+            card.setTitle(cardRequest.getTitle());
+            card.setDescription(cardRequest.getDescription());
+            card.setSection(cardRequest.getSection());
+
+            Card updatedCard = cardService.updateCard(card);
             return ResponseEntity.ok(updatedCard);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @DeleteMapping("/{cardId}")
+    @DeleteMapping("/{card_Id}")
     public ResponseEntity<Void> deleteCard(
-            @PathVariable Long boardId,
-            @PathVariable Card cardId) {
+            @PathVariable("board_id") Long boardId,
+            @PathVariable("card_Id") Long cardId) {
 
-        Optional<Card> card = cardService.getCardById(cardId.getCardId());
-        if (card != null) {
+        Optional<Card> cardOptional = cardService.getCardById(cardId);
+        if (cardOptional.isPresent()) {
+            Card card = cardOptional.get();
+
+            // Remove the card from the associated board
+            Board board = boardService.getBoardById(boardId);
+            List<Card> cardsOfThisBoard = board.getCards();
+            cardsOfThisBoard.remove(card);
+            board.setCards(cardsOfThisBoard);
+            boardService.updateBoardObject(board);
+
+            // Delete the card after removing its associations
             cardService.deleteCard(cardId);
+
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
 }

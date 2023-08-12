@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trello Board</title>
     <style>
-
-       
 body {
-        background-color: #8781a5;
+        background-color: #8781A5;
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-    }        
-
+    }
         .board {
             display: flex;
             justify-content: space-between;
             padding: 20px;
         }
-
         .column {
             background-color:#9b92c3;
             width: 250px;
@@ -28,161 +23,86 @@ body {
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-
         .board-container {
             display: flex;
         }
-
         .board-column {
             flex: 1;
             padding: 10px;
             border: 1px solid #ccc;
         }
-
         .card {
             margin-bottom: 1px;
             padding: 5px;
-            border: 1px solid #5b658e;
-            background-color: #9b9bdc;
+            border: 1px solid #5B658E;
+            background-color: #9B9BDC;
         }
-
-
         .idDiv {
             color: #000;
-            font-size: 35px; 
-            margin-bottom: 10px; 
+            font-size: 35px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
         }
-
-
         .titleDiv{
             color: #000;
-            font-weight: bold; 
-            font-size: 35px; 
-            margin-bottom: 10px; 
+            font-weight: bold;
+            font-size: 35px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-
         }
-
         .descriptionDiv{
             color: #000;
-            font-size: 35px; 
-            margin-bottom: 10px; 
+            font-size: 35px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
         }
-
-
     </style>
 </head>
-
 <body>
-    <h1>Trello Board</h1>
-
-    <script>
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        fetch("http://localhost:8080/boards/1/cards", requestOptions)
-            .then(response => response.json()) // Parse response as JSON
-            .then(result => {
-                // Process each element using forEach
-                result.forEach(element => {
-                    let sectionNumber = element.section;
-                    console.log(sectionNumber);
-                    let columnDiv;
-                    if (sectionNumber === 1) {
-                        columnDiv = document.getElementById("todo");
-                    }
-                    else if (sectionNumber === 2) {
-                        columnDiv = document.getElementById("inprogress");
-                    }
-                    else {
-                        columnDiv = document.getElementById("done");
-                    }
-
-                    let cardDiv = document.createElement("div");
-                    cardDiv.className = "card";
-
-                    let idDiv = document.createElement("idDiv");
-                    idDiv.className = "idDiv";
-                    idDiv.textContent = element.cardId;
-
-
-                    let titleDiv = document.createElement("titleDiv");
-                    titleDiv.className = "titleDiv";
-                    titleDiv.textContent = element.title;
-
-
-                    let descriptionDiv = document.createElement("descriptionDiv");
-                    descriptionDiv.className = "descriptionDiv";
-                    descriptionDiv.textContent = element.description;
-
-                    cardDiv.appendChild(idDiv);
-                    cardDiv.appendChild(titleDiv);
-                    cardDiv.appendChild(descriptionDiv);
-
-                    columnDiv.appendChild(cardDiv);
-                    console.log(element); // For example, log the element to the console
-                });
-            })
-            .catch(error => console.log('error', error)); // Handle errors
-
-
-
-
-            var requestOptions = {
-  method: 'PUT',
-  redirect: 'follow'
-};
-
-
-    </script>   
-    <div class="board">
-        <div class="column" id="todo">
-            <h2>To Do</h2>
-        </div>
-        <div class="column" id="inprogress">
-            <h2>In Progress</h2>
-        </div>
-        <div class="column" id="done">
-            <h2>Done</h2>
-            <!-- Placeholder for Done cards -->
-        </div>
+<h1>Trello Board</h1>
+<script>
+</script>
+<div class="board">
+    <div class="column" id="todo">
+        <h2>To Do</h2>
     </div>
-    <!-- Create Board -->
-    <div>
-        <h2>Create a New Board</h2>
-        <input type="text" id="new-board-name" placeholder="Board Name">
-        <button onclick="createBoard()">Create</button>
+    <div class="column" id="inprogress">
+        <h2>In Progress</h2>
     </div>
-
-    <!-- Create Card -->
-    <div>
-        <h2>Create a New Card</h2>
-        <select id="board-select">
-            <!-- Board options will be dynamically added here -->
-        </select>
-        <input type="text" id="new-card-title" placeholder="Card Title">
-        <input type="text" id="new-card-description" placeholder="Card Description"> 
-        <select id="column-select">
-            <option value="1">To Do</option>
-            <option value="2">In Progress</option>
-            <option value="3">Done</option>
-        </select>
-        <button onclick="createCard()">Create</button>
+    <div class="column" id="done">
+        <h2>Done</h2>
+        <!-- Placeholder for Done cards -->
     </div>
-
-    <!-- Boards and Cards -->
-    <div class="board-container" id="boards-container">
-        <!-- Boards and cards will be dynamically added here -->
-    </div>
+</div>
+<!-- Create Board -->
+<div>
+    <h2>Create a New Board</h2>
+    <input type="text" id="new-board-name" placeholder="Board Name">
+    <button onclick="createBoard()">Create</button>
+</div>
+<!-- Create Card -->
+<div>
+    <h2>Create a New Card</h2>
+    <select id="board-select">
+        <!-- Board options will be dynamically added here -->
+    </select>
+    <input type="text" id="new-card-title" placeholder="Card Title">
+    <input type="text" id="new-card-description" placeholder="Card Description">
+    <select id="column-select">
+        <option value="1">To Do</option>
+        <option value="2">In Progress</option>
+        <option value="3">Done</option>
+    </select>
+    <button onclick="createCard()">Create</button>
+</div>
+<!-- Boards and Cards -->
+<div class="board-container" id="boards-container">
+    <!-- Boards and cards will be dynamically added here -->
+</div>
 <br>
-
 <h2>Update Card</h2>
 <input type="text" id="updateCardIdInput" placeholder="Select ID Card">
 <input type="text" id="updateCardNameInput" placeholder="Updated Card Name">
@@ -193,22 +113,14 @@ body {
     <option value="3">Done</option>
 </select>
 <button onclick="updateCard()">Update</button><br>
-
-
-
-
 <h2>Delete Card</h2>
-    <input type="text" id="deleteTaskId" placeholder="Enter Card ID">
-    <button id="deleteButton">Delete Card</button>
-
-
-    <!-- Script -->
-    <script src="app.js"></script>
-    <script>
+<input type="text" id="deleteTaskId" placeholder="Enter Card ID">
+<button id="deleteButton">Delete Card</button>
+<!-- Script -->
+<script src="app.js"></script>
+<script>
         // Fetch existing boards on page load
-        fetchBoardsAndPopulateSelect();
+        //fetchBoardsAndPopulateSelect();
     </script>
-
 </body>
-
 </html>
